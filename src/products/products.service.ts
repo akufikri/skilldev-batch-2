@@ -1,19 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './schemas/product.schema';
 import { Model } from 'mongoose';
 import { NotFoundException } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager'; // tipe murni dari cache-manager, bukan @nestjs
 
 @Injectable() 
 export class ProductsService {
   // 🔥 @InjectModel: setara "@Injectable()" tapi khusus untuk model Mongoose
-  constructor(@InjectModel(Product.name) private productModel: Model<ProductDocument>) {}
+  constructor(
+    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache, // 👈 suntik kontrol cache manual
+  ) {}
 
-  create(dto: CreateProductDto): Promise<Product> {
-    const created = new this.productModel(dto); // buat instance dokumen baru
-    return created.save(); // .save() → simpan ke MongoDB, kembalikan dokumen tersimpan
+  async findAllCustom(): Promise<Product[]> {
+    const cacheKey = "all_products_active"
+
+    const cacheData = await this.cacheManager.get<Product[]>(cacheKey) // 1. cek cache dulu
+    if(cacheData) return cacheData;  // hit → langsung balikkan, skip MongoDB
+
+    const products = await this.productModel.find().exec();  // 2. cache miss → ambil dari DB
+    await this.cacheManager.set(cacheKey, products, 30 * 1000) // 3. simpan untuk request berikutnya
+
+    return products;
+  }
+
+  async create(dto: CreateProductDto): Promise<Product> {
+    // const created = new this.productModel(dto); // buat instance dokumen baru
+    // return created.save(); // .save() → simpan ke MongoDB, kembalikan dokumen tersimpan
+
+    const newProduct = new this.productModel(dto);
+    const saved = await newProduct.save();
+
+    // 4. 🔥 CACHE INVALIDATION: WAJIB hapus cache lama saat ada mutasi data (create/update/delete)
+    await this.cacheManager.del("all_products_active");
+    
+    return saved;
   }
 
   findAll(skip: number, limit: number): Promise<Product[]> {

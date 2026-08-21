@@ -1,17 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AuthGuard } from 'src/common/guards/auth.guards';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 @UseGuards(AuthGuard)
 @ApiTags("Products Management") // 👈 kelompokkan semua rute produk jadi satu grup di UI// 👈 kelompokkan semua rute produk jadi satu grup di UI
 @Controller('products')
+
+@UseInterceptors(CacheInterceptor) // define cache interseptor for product api
+
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Get("categories-list")
+  @CacheKey("custom_categories_key") // opsional; default pakai URL sebagai kunci
+  @CacheTTL(300 * 1000) // override TTL global, khusus endpoint ini 5 menit
+  async getCategories()
+  {
+    return this.productsService.findAllWithCategory();
+  }
+  
   @Post()
   @ApiOperation({ summary: "Create Product",  description: "Add New Product into POS System"})
   @ApiResponse({ status: 201, description: "Operation Successful" })

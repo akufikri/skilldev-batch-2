@@ -1,0 +1,15 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { ClassSerializerInterceptor } from '@nestjs/common';
+import { RegisterDto } from './dto/auth.dto';
+
+@UseInterceptors(ClassSerializerInterceptor) // 👈 tanpa ini, @Exclude() di Entity TIDAK bekerja
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post("register")
+  register (@Body() registerDto: RegisterDto){
+    return this.authService.register(registerDto);
+  }
+}
