@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ClassSerializerInterceptor } from '@nestjs/common';
-import { RegisterDto } from './dto/auth.dto';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
 
 @UseInterceptors(ClassSerializerInterceptor) // 👈 tanpa ini, @Exclude() di Entity TIDAK bekerja
 @Controller('auth')
@@ -11,5 +11,10 @@ export class AuthController {
   @Post("register")
   register (@Body() registerDto: RegisterDto){
     return this.authService.register(registerDto);
+  }
+
+  @Post("login")
+  login (@Body() loginDto: LoginDto){
+    return this.authService.login(loginDto);
   }
 }

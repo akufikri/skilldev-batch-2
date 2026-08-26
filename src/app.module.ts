@@ -6,6 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { AuditLogInterceptor } from './common/intersecptors/audit-log.interceptor';
 
 @Module({
   imports: [
@@ -17,13 +20,19 @@ import { AuthModule } from './auth/auth.module';
     }),
     ProductsModule,
     UsersModule,
-    AuthModule
-  ]
-})
-
-@Module({
+    AuthModule,
+    AuditLogsModule
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    // 💡 Mendaftarkan Interceptor Audit Log secara GLOBAL
+    // Sekarang seluruh endpoint API di dalam aplikasi otomatis dicatat log-nya!
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditLogInterceptor
+    }
+  ]
 })
 
 export class AppModule {}

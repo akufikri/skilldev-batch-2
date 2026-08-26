@@ -13,3 +13,12 @@ export class RegisterDto {
     @MinLength(8, { message: "Password must be at least 8 characters long." })
     password!: string; // 👈 password MENTAH dari klien, belum di-hash — beda nama dgn passwordHash di schema
 }
+
+export class LoginDto {
+    @IsEmail({}, { message: "Format email not valid" })
+    email!: string;
+
+    @IsNotEmpty()
+    @MinLength(8, { message: "Password must be at least 8 characters long." })
+    password!: string;
+}

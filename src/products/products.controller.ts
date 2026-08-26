@@ -6,11 +6,13 @@ import { AuthGuard } from 'src/common/guards/auth.guards';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags("Products Management") // 👈 kelompokkan semua rute produk jadi satu grup di UI// 👈 kelompokkan semua rute produk jadi satu grup di UI
 @Controller('products')
-
 @UseInterceptors(CacheInterceptor) // define cache interseptor for product api
 
 export class ProductsController {
@@ -25,6 +27,7 @@ export class ProductsController {
   }
   
   @Post()
+  @Roles("MANAGER", "ADMIN")
   @ApiOperation({ summary: "Create Product",  description: "Add New Product into POS System"})
   @ApiResponse({ status: 201, description: "Operation Successful" })
   @ApiResponse({ status: 400, description: "Validation failed" })
@@ -53,6 +56,7 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @Roles("MANAGER", "ADMIN")
   @ApiOperation({ summary: "Update Product"})
   @ApiParam({ name: "id", description: "Unique product ID", example: "1" }) // jelaskan parameter URL
   @ApiResponse({ status: 200, description: "Operation Successful" })
@@ -62,6 +66,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @Roles("MANAGER", "ADMIN")
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
   }
