@@ -7,6 +7,9 @@ import StockPage from "@/pages/StockPage";
 import { NotFoundPage } from "@/pages/error/NotFoundPage";
 import CategoriesPages from "@/pages/CategoriesPage";
 import DetailCategoriesPage from "@/pages/DetailCategoriesPage";
+import PerformanceOptimizationDemo from "@/pages/PerformenceOptimaztionDemo";
+import LoginRetail from "@/pages/RetailLoginForm";
+import TanstackQueryDemo from "@/pages/TanstackQueryDemo";
 
 export const appRouter = createBrowserRouter([
   {
@@ -21,6 +24,18 @@ export const appRouter = createBrowserRouter([
   {
     path: "/categories/product/:slug",
     element: <DetailCategoriesPage />,
+  },
+  {
+    path: "/performance",
+    element: <PerformanceOptimizationDemo />,
+  },
+  {
+    path: "/retail/login",
+    element: <LoginRetail />,
+  },
+  {
+    path: "/tanstack/demo",
+    element: <TanstackQueryDemo />,
   },
   {
     path: "/login",
