@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POS Kafe Pintar</title>
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+  </head>
+  <body>
+    <!-- navbar / bagian atas website yang terrender -->
+    <header>
+      <h1>POS Kafe Pintar</h1>
+      <nav>
+        <a href="#transaksi">Transaksi</a>
+        <a href="#laporan">Laporan</a>
+      </nav>
+    </header>
+
+    <!-- konten utama -->
+    <br />
+    <main>
+      <!-- <section id="daftar-menu"> 
+            <h2>Menu kopi & cemilan</h2>
+        </section>
+        <section id="keranjang-belanja"> 
+            <h2>Keranjang Belanja</h2>
+        </section> -->
+      <form action="/proses-transaksi" method="POST">
+        <div>
+          <label for="nama-pelanggan">Nama Pelanggan:</label>
+          <br /><br />
+          <input
+            type="text"
+            id="nama-pelanggan"
+            name="nama-pelanggan"
+            placeholder="Masukkan nama pelanggan"
+            required
+          />
+        </div>
+        <br />
+
+        <div>
+          <label for="jumlah-item">Jumlah Kopi:</label>
+          <br /><br />
+          <input type="number" id="jumlah-item" name="qty" min="1" value="1" />
+        </div>
+
+        <br />
+        <div>
+          <label for="metode-pembayaran">Metode Pembayaran :</label>
+          <br /><br />
+          <select id="metode-pembayaran" name="payment_method">
+            <option value="">Pilih metode pembayaran</option>
+            <option value="cash">Uang Tunai (Cash)</option>
+            <option value="qris">Qris</option>
+            <option value="debit">Kartu Debit</option>
+          </select>
+        </div>
+        <br />
+        <!-- <img src="https://th.bing.com/th/id/OIP.vqMczLjEg79axVSfg--5ngHaE4?w=274&h=181&c=7&r=0&o=7&pid=1.7&rm=3" alt="Segelas Es Kopi Susu dengan topping boba"> -->
+        <br />
+        <!-- <br /> -->
+          <button type="submit" class="tombol-bayar">Selesaikan Transaksi</button>
+      </form>
+    </main>
+
+    <!-- footer / bagian bawah website yang terrender -->
+    <footer>
+      <p>&copy; 2026 POS Kafe Pintar. Shift Pagi : Andi</p>
+    </footer>
+  </body>
+</html>

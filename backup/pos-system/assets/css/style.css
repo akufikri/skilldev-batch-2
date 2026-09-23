@@ -1,0 +1,27 @@
+button {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border: 1px black solid;
+}
+
+.contoh-margin{
+    margin: 20px; /* jarak ke luar kotak */
+}
+
+.card-product{
+    padding: 15px; /* jarak ke dalam kotak */
+    border: 2px solid #ddd; /* garis tepi kotak */
+    margin: 10px; /* jarak antar kotak */
+    border-radius: 5px; /* sudut kotak membulat */
+    display: flex; /* membuat kotak menjadi fleksibel */
+    justify-content: space-between; /* mengatur jarak antar elemen di dalam kotak */
+    align-items: center; /* mengatur posisi elemen di dalam kotak */
+}
+
+@media screen and (max-width: 600px) {
+    .card-product {
+        flex-direction: column; /* mengubah arah elemen menjadi vertikal */
+        align-items: flex-start; /* mengatur posisi elemen di dalam kotak */
+    }
+}

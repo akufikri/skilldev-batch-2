@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing DOM - Add Coffee</title>
+  </head>
+  <body>
+    <button id="btn-add-coffee">Add Coffee</button>
+    <p id="total-bill-text">Rp 0</p>
+
+    <script>
+      // a. Cari elemen-elemen yang dibutuhkan di layar
+      const addCoffeeButton = document.querySelector("#btn-add-coffee");
+      const totalBillElement = document.querySelector("#total-bill-text");
+
+      // b. Siapkan data logikanya (Variabel dengan nama bahasa Inggris)
+      let currentTotalPayment = 0;
+      const coffeePrice = 20000;
+
+      // c. Pasang sensor klik pada tombol "Tambah Kopi"
+      //   addCoffeeButton.addEventListener("click", function () {
+      //     // Jalankan logika matematika (Problem Solving)
+      //     currentTotalPayment = currentTotalPayment + coffeePrice;
+
+      //     // Ubah tampilan teks di layar kasir secara instan!
+      //     totalBillElement.textContent = "Rp " + "HIDUP JOKOWI!";
+      //   });
+      addCoffeeButton.addEventListener("click", function () {
+        totalBillElement.innerHTML = `
+            <img
+            src="https://th.bing.com/th/id/OIP.VIWrmjKGxzv_7ESEMrPvfwHaE8?w=237&h=180&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3"
+            alt="Coffee"
+            width="200"
+            >
+        `;
+        console.log("ERROR 500")
+      });
+    </script>
+  </body>
+</html>
